@@ -1,0 +1,22 @@
+### Create IT category
+
+POST {{API_URL}}/api/categories
+Content-Type: application/json
+Authorization: Bearer {{$auth.token("oauth2")}}
+
+{
+  "id": "IT",
+  "name": "Information & Technology"
+}
+
+### Create SC category
+
+POST {{API_URL}}/api/categories
+Content-Type: application/json
+Authorization: Bearer {{$auth.token("oauth2")}}
+
+{
+  "id": "SC",
+  "name": "Science"
+}
+

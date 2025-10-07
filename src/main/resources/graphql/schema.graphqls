@@ -1,0 +1,19 @@
+scalar Date
+
+type Query {
+    courseById(id: ID!): Course
+}
+
+type Course {
+    id: ID!
+    name: String!
+    startDate: Date!
+    teacher: User
+    createdBy: User!
+    updatedBy: User!
+}
+
+type User {
+    id: ID!
+    name: String!
+}

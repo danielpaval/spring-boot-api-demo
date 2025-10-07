@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: Spring Boot API Demo
+  datasource:
+    url: ${DATASOURCE_URL:jdbc:sqlserver://localhost:1433;databaseName=master;encrypt=false;trustServerCertificate=true;}
+    username: ${DATASOURCE_USERNAME:SA}
+    password: ${DATASOURCE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServerDialect
+        format_sql: true
+        envers:
+          audit_table_prefix: audit_
+          audit_table_suffix:
+          revision_field_name: rev
+          revision_type_field_name: revtype
+          store_data_at_delete: true
+    show-sql: true
+  graphql:
+    graphiql:
+      enabled: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI:http://localhost:8180/realms/dev}
+
+debug: true

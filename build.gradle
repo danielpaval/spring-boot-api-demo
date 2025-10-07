@@ -1,0 +1,119 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.6'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.openapi.generator' version '7.16.0'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+description = 'Demo project for Spring Boot'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    //set('springModulithVersion', "1.4.1")
+    set('testcontainersVersion', "1.19.3")
+    set('mapstructVersion', "1.5.5.Final")
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.data:spring-data-envers'
+    implementation 'org.springframework.boot:spring-boot-starter-graphql'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    //implementation 'org.springframework.modulith:spring-modulith-starter-core'
+    implementation 'com.graphql-java:graphql-java-extended-scalars:24.0'
+    //implementation 'org.springframework.modulith:spring-modulith-starter-jpa'
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
+    implementation 'io.swagger.core.v3:swagger-annotations-jakarta:2.2.38'
+    implementation 'io.github.perplexhub:rsql-jpa-spring-boot-starter:6.0.32'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
+    //runtimeOnly 'org.springframework.modulith:spring-modulith-actuator'
+    //runtimeOnly 'org.springframework.modulith:spring-modulith-observability'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    annotationProcessor 'org.hibernate.orm:hibernate-jpamodelgen'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testImplementation 'org.springframework.graphql:spring-graphql-test'
+    //testImplementation 'org.springframework.modulith:spring-modulith-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:mssqlserver'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+dependencyManagement {
+    imports {
+        //mavenBom "org.springframework.modulith:spring-modulith-bom:${springModulithVersion}"
+        mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+    }
+}
+
+test {
+    useJUnitPlatform()
+//    enabled = false
+}
+
+// OpenAPI Generator configuration
+openApiGenerate {
+    generatorName = 'spring'
+    validateSpec = true
+    inputSpec = file("$projectDir/src/main/resources/openapi.yml").toURI().toString()
+    outputDir = "${layout.buildDirectory.dir('generated/openapi').get()}"
+    apiPackage = 'com.example.demo.generated.api'
+    modelPackage = 'com.example.demo.generated.dto'
+    configOptions = [
+            interfaceOnly                 : 'true', // Whether to generate only API interface stubs without the server files.
+            useSpringBoot3                : 'true', // Generate code and provide dependencies for use with Spring Boot 3.x.
+            useTags                       : 'true', // Use tags for creating interface and controller classnames
+            skipDefaultInterface          : 'true', // Whether to skip generation of default implementations for java8 interfaces
+            useBeanValidation             : 'true', // Generate Bean Validation annotations
+            additionalModelTypeAnnotations: '@lombok.Builder @lombok.AllArgsConstructor', // Avoid @lombok.Data as it prevents validation constraints being applied
+    ]
+    importMappings = [
+            'CourseDto'     : 'com.example.demo.dto.CourseDto',
+            'CoursePatchDto': 'com.example.demo.dto.CoursePatchDto',
+            'CourseCriteria': 'com.example.demo.dto.CourseCriteria',
+            'UserPatchDto'  : 'com.example.demo.dto.UserPatchDto',
+            'EnrollmentId'  : 'com.example.demo.entity.EnrollmentId',
+            'Pageable'      : 'org.springframework.data.domain.Pageable',
+    ]
+}
+
+sourceSets {
+    main {
+        java {
+            // Add generated sources to the source sets
+            srcDir "${layout.buildDirectory.dir('generated/openapi/src/main/java').get()}"
+        }
+    }
+}
+
+// Ensure code generation happens before compilation
+compileJava.dependsOn tasks.openApiGenerate

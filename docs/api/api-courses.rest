@@ -1,0 +1,65 @@
+### Get course by ID
+
+GET {{API_URL}}/api/courses/1
+Authorization: Bearer {{$auth.token("oauth2")}}
+
+### Find all courses
+
+GET {{API_URL}}/api/courses?page=0&size=10
+Authorization: Bearer {{$auth.token("oauth2")}}
+
+### Find upcoming courses
+
+GET {{API_URL}}/api/courses?query=startDate=ge=2025-09-01
+Authorization: Bearer {{$auth.token("oauth2")}}
+
+### Find courses by name
+
+GET {{API_URL}}/api/courses?query=name=like=Test
+Authorization: Bearer {{$auth.token("oauth2")}}
+
+### Create course
+
+POST {{API_URL}}/api/courses
+Content-Type: application/json
+Authorization: Bearer {{$auth.token("oauth2")}}
+
+{
+  "name": "Test Course",
+  "categoryId": "IT",
+  "startDate": "2025-09-01"
+}
+
+### Update course
+
+PUT {{API_URL}}/api/courses/1
+Content-Type: application/json
+Authorization: Bearer {{$auth.token("oauth2")}}
+
+{
+  "name": "Test Course3",
+  "startDate": "2025-09-01",
+  "createdById": 1,
+  "updatedById": 1
+}
+
+### Patch course
+
+PATCH {{API_URL}}/api/courses/1
+Content-Type: application/json
+Authorization: Bearer {{$auth.token("oauth2")}}
+
+{
+  "startDate": "2025-09-03"
+}
+
+### Delete course
+
+DELETE {{API_URL}}/api/courses/20004
+Authorization: Bearer {{$auth.token("oauth2")}}
+
+### Delete course (alternative)
+
+DELETE {{API_URL}}/api/courses/7
+Authorization: Bearer {{$auth.token("oauth2")}}
+

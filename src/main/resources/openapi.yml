@@ -1,0 +1,527 @@
+openapi: 3.1.0
+info:
+  title: Learning Management System (LMS) API
+  version: v1
+servers:
+  - url: http://localhost:8080
+paths:
+  /api/courses:
+    get:
+      tags:
+        - Courses
+      operationId: findCoursesByCriteria
+      parameters:
+        - name: criteria
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/CourseCriteria'
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoursePageDto'
+    post:
+      tags:
+        - Courses
+      operationId: saveCourse
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseDto'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseDto'
+  /api/courses/{id}:
+    get:
+      tags:
+        - Courses
+      operationId: findCourseById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseDto'
+    put:
+      tags:
+        - Courses
+      operationId: updateCourse
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseDto'
+    patch:
+      tags:
+        - Courses
+      operationId: patchCourse
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CoursePatchDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseDto'
+    delete:
+      tags:
+        - Courses
+      operationId: deleteCourse
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: No Content
+  /api/users:
+    get:
+      tags:
+        - Users
+      operationId: findUsersByCriteria
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPageDto'
+    post:
+      tags:
+        - Users
+      operationId: saveUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDto'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+  /api/users/{id}:
+    get:
+      tags:
+        - Users
+      operationId: findUserById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+    put:
+      tags:
+        - Users
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+    patch:
+      tags:
+        - Users
+      operationId: patchUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPatchDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+    delete:
+      tags:
+        - Users
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: No Content
+  /api/enrollments:
+    get:
+      tags:
+        - Enrollments
+      operationId: findAllEnrollments
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnrollmentDto'
+    post:
+      tags:
+        - Enrollments
+      operationId: saveEnrollment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnrollmentDto'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrollmentDto'
+  /api/enrollments/{courseId}/{studentId}:
+    get:
+      tags:
+        - Enrollments
+      operationId: findEnrollmentById
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: studentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrollmentDto'
+    delete:
+      tags:
+        - Enrollments
+      operationId: deleteEnrollmentById
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: studentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: No Content
+  /api/categories:
+    post:
+      tags:
+        - Categories
+      operationId: saveCategory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryDto'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryDto'
+  /api/categories/{id}:
+    get:
+      tags:
+        - Categories
+      operationId: findCategoryById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryDto'
+    put:
+      tags:
+        - Categories
+      operationId: updateCategory
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryDto'
+    delete:
+      tags:
+        - Categories
+      operationId: deleteCategory
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+components:
+  schemas:
+    Page:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+        count:
+          type: integer
+          format: int64
+    CoursePageDto:
+      allOf:
+        - $ref: '#/components/schemas/Page'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/CourseDto'
+    CourseCriteria:
+      type: object
+      properties:
+        query:
+          type: string
+    Pageable:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            type: string
+    CourseDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          minLength: 1
+        categoryId:
+          type: string
+        startDate:
+          type: string
+          format: date
+        teacherId:
+          type: integer
+          format: int64
+        createdById:
+          type: integer
+          format: int64
+        updatedById:
+          type: integer
+          format: int64
+      required:
+        - categoryId
+        - name
+        - startDate
+    CategoryDto:
+      x-implements: ['com.example.common.dto.CommonDto<String>']
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          minLength: 1
+      required:
+        - name
+    EnrollmentId:
+      type: object
+      properties:
+        courseId:
+          type: integer
+          format: int64
+        studentId:
+          type: integer
+          format: int64
+    EnrollmentDto:
+      x-implements: ['com.example.common.dto.CommonDto<EnrollmentId>']
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/EnrollmentId'
+        date:
+          type: string
+          format: date-time
+        grade:
+          type: string
+          enum: [A, B, C, D, F]
+    CoursePatchDto:
+      type: object
+      properties:
+        name:
+          type: string
+        categoryId:
+          type: string
+        startDate:
+          type: string
+          format: date
+        teacherId:
+          type: integer
+          format: int64
+    UserDto:
+      x-implements: ['com.example.common.dto.CommonDto<Long>']
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          minLength: 1
+        deleted:
+          type: boolean
+      required:
+        - name
+    UserPatchDto:
+      type: object
+      properties:
+        name:
+          type: string
+    UserPageDto:
+      allOf:
+        - $ref: '#/components/schemas/Page'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserDto'

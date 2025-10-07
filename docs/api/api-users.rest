@@ -1,0 +1,38 @@
+### Find all users
+
+GET {{API_URL}}/api/users
+Authorization: Bearer {{$auth.token("oauth2")}}
+
+### Create user
+
+POST {{API_URL}}/api/users
+Content-Type: application/json
+Authorization: Bearer {{$auth.token("oauth2")}}
+
+{
+  "name": "Test User"
+}
+
+### Create user (error: blank name)
+
+POST {{API_URL}}/api/users
+Content-Type: application/json
+Authorization: Bearer {{$auth.token("oauth2")}}
+
+{
+}
+
+### Update user
+
+PUT {{API_URL}}/api/users/1
+Content-Type: application/json
+Authorization: Bearer {{$auth.token("oauth2")}}
+
+{
+  "name": "Test User111"
+}
+
+### Delete user
+
+DELETE {{API_URL}}/api/users/1
+Authorization: Bearer {{$auth.token("oauth2")}}

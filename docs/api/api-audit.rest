@@ -1,0 +1,30 @@
+### Audit - Get course revisions
+
+GET {{API_URL}}/api/courses/1/revisions?page=0&size=10
+Authorization: Bearer {{$auth.token("oauth2")}}
+
+### Audit - Get specific course revision
+
+GET {{API_URL}}/api/courses/1/revisions/1
+Authorization: Bearer {{$auth.token("oauth2")}}
+
+### Audit - Get latest course revision
+
+GET {{API_URL}}/api/courses/1/revisions/latest
+Authorization: Bearer {{$auth.token("oauth2")}}
+
+### Audit - Get user revisions
+
+GET {{API_URL}}/api/users/1/revisions?page=0&size=10
+Authorization: Bearer {{$auth.token("oauth2")}}
+
+### Audit - Get specific user revision
+
+GET {{API_URL}}/api/users/1/revisions/1
+Authorization: Bearer {{$auth.token("oauth2")}}
+
+### Audit - Get latest user revision
+
+GET {{API_URL}}/api/users/1/revisions/latest
+Authorization: Bearer {{$auth.token("oauth2")}}
+

@@ -1,0 +1,22 @@
+### Get USER access token
+
+POST {{KEYCLOAK_URL}}/realms/{{KEYCLOAK_REALM}}/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id=private&client_secret={{CLIENT_SECRET}}&username=user@example.com&password={{USER_PASSWORD}}
+
+> {%
+    client.global.set("JWT", response.body.access_token);
+%}
+
+### Get ADMIN access token
+
+POST {{KEYCLOAK_URL}}/realms/{{KEYCLOAK_REALM}}/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id=private&client_secret={{CLIENT_SECRET}}&username=admin@example.com&password={{USER_PASSWORD}}
+
+> {%
+    client.global.set("JWT", response.body.access_token);
+%}
+

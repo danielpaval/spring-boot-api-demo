@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    # Will be provided by Testcontainers ServiceConnection
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  # Disable OAuth2 configuration for tests
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
+
+logging:
+  level:
+    com.example: DEBUG
+    org.springframework.security: DEBUG

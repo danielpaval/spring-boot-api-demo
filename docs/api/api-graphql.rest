@@ -1,0 +1,26 @@
+### GraphQL - Get course by ID
+
+POST {{API_URL}}/graphql
+Content-Type: application/json
+
+{
+  "query": """
+  query CourseById {
+  courseById(id: "1") {
+  name
+  createdBy {
+  id
+  name
+}
+startDate
+updatedBy {
+  id
+  name
+}
+id
+}
+}
+
+"""
+}
+

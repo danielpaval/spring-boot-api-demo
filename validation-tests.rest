@@ -1,0 +1,93 @@
+### Get ADMIN access token (copy from api.rest and modify as needed)
+
+POST {{KEYCLOAK_URL}}/realms/dev/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id=private&client_secret={{CLIENT_SECRET}}&username=admin@example.com&password={{USER_PASSWORD}}
+
+> {%
+    client.global.set("JWT", response.body.access_token);
+%}
+
+### Test 1: Create user with missing name (should return 400)
+
+POST {{API_URL}}/api/users
+Content-Type: application/json
+Authorization: Bearer {{JWT}}
+
+{}
+
+### Test 2: Create user with empty name (should return 400)
+
+POST {{API_URL}}/api/users
+Content-Type: application/json
+Authorization: Bearer {{JWT}}
+
+{
+  "name": ""
+}
+
+### Test 3: Create user with blank name (should return 400)
+
+POST {{API_URL}}/api/users
+Content-Type: application/json
+Authorization: Bearer {{JWT}}
+
+{
+  "name": "   "
+}
+
+### Test 4: Create user with valid name (should return 201)
+
+POST {{API_URL}}/api/users
+Content-Type: application/json
+Authorization: Bearer {{JWT}}
+
+{
+  "name": "Test User"
+}
+
+### Test 5: Create course with missing name (should return 400)
+
+POST {{API_URL}}/api/courses
+Content-Type: application/json
+Authorization: Bearer {{JWT}}
+
+{
+  "startDate": "2025-09-01",
+  "createdById": 1,
+  "updatedById": 1
+}
+
+### Test 6: Create course with missing startDate (should return 400)
+
+POST {{API_URL}}/api/courses
+Content-Type: application/json
+Authorization: Bearer {{JWT}}
+
+{
+  "name": "Test Course",
+  "createdById": 1,
+  "updatedById": 1
+}
+
+### Test 7: Patch course name as non-admin (should return 403)
+
+PATCH {{API_URL}}/api/courses/1
+Content-Type: application/json
+Authorization: Bearer {{USER_JWT}}
+
+{
+  "name": "Updated Course Name"
+}
+
+### Get USER access token for Test 7
+
+POST {{KEYCLOAK_URL}}/realms/dev/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id=private&client_secret={{CLIENT_SECRET}}&username=user@example.com&password={{USER_PASSWORD}}
+
+> {%
+client.global.set("USER_JWT", response.body.access_token);
+%}
